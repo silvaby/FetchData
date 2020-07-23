@@ -6,9 +6,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 final class ServiceLocator {
-    /**
-     A shared singleton settings object.
-     */
+    /// A shared singleton object.
     static let shared = ServiceLocator()
     lazy var personsManager = PersonsManager()
 }

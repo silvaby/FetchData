@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class PersonsManager {
     // MARK: - Properties
@@ -8,51 +9,67 @@ class PersonsManager {
     /// `Persons`.
     private var persons = Persons()
     /// `Persons` with age
-    private var personsWithAge = Persons()
+    var personsWithAge = Persons()
 
     /// `Persons` with age to show
     var personsWithAgeToShow = Persons()
-    var stateOfGender = "R"
-    var stateOfAge = "R"
-    var state = ""
+    var sortByAge = Age.random
+    var sortByGender = Gender.random
+    var genderSegmentedControlIndex = 0
+    var ageSegmentedControlIndex = 0
 
     /// Changes the information.
-    func change() {
-        state = stateOfGender + stateOfAge
-
-        switch state {
-        case "RR":
+    func sorted() {
+        if sortByAge == .random, sortByGender == .random {
             personsWithAgeToShow = personsWithAge
-        case "RU":
+            genderSegmentedControlIndex = 0
+            ageSegmentedControlIndex = 0
+        } else if sortByAge == .up, sortByGender == .random {
             personsWithAgeToShow = personsWithAge.sorted { Int($0.dateOfBirtdh!)! < Int($1.dateOfBirtdh!)! }
-        case "RD":
+            genderSegmentedControlIndex = 0
+            ageSegmentedControlIndex = 1
+        } else if sortByAge == .down, sortByGender == .random {
             personsWithAgeToShow = personsWithAge.sorted { Int($0.dateOfBirtdh!)! > Int($1.dateOfBirtdh!)! }
-
-        case "FR":
+            genderSegmentedControlIndex = 0
+            ageSegmentedControlIndex = 2
+        } else if sortByAge == .random, sortByGender == .female {
             personsWithAgeToShow = personsWithAge.filter { $0.gender == .female }
-        case "FU":
+            genderSegmentedControlIndex = 1
+            ageSegmentedControlIndex = 0
+        } else if sortByAge == .up, sortByGender == .female {
             personsWithAgeToShow = personsWithAge
                 .filter { $0.gender == .female }
                 .sorted { Int($0.dateOfBirtdh!)! < Int($1.dateOfBirtdh!)! }
-
-        case "FD":
+            genderSegmentedControlIndex = 1
+            ageSegmentedControlIndex = 1
+        } else if sortByAge == .down, sortByGender == .female {
             personsWithAgeToShow = personsWithAge
                 .filter { $0.gender == .female }
                 .sorted { Int($0.dateOfBirtdh!)! > Int($1.dateOfBirtdh!)! }
-
-        case "MR":
+            genderSegmentedControlIndex = 1
+            ageSegmentedControlIndex = 2
+        } else if sortByAge == .random, sortByGender == .male {
             personsWithAgeToShow = personsWithAge.filter { $0.gender == .male }
-        case "MU":
+            genderSegmentedControlIndex = 2
+            ageSegmentedControlIndex = 0
+        } else if sortByAge == .up, sortByGender == .male {
             personsWithAgeToShow = personsWithAge
                 .filter { $0.gender == .male }
                 .sorted { Int($0.dateOfBirtdh!)! < Int($1.dateOfBirtdh!)! }
-        case "MD":
+            genderSegmentedControlIndex = 2
+            ageSegmentedControlIndex = 1
+        } else if sortByAge == .down, sortByGender == .male {
             personsWithAgeToShow = personsWithAge
                 .filter { $0.gender == .male }
                 .sorted { Int($0.dateOfBirtdh!)! > Int($1.dateOfBirtdh!)! }
-        default:
-            break
+            genderSegmentedControlIndex = 2
+            ageSegmentedControlIndex = 2
         }
+    }
+
+    func stateOfSegmentedControl(genderSegmentedControl: UISegmentedControl, ageSegmentedControl: UISegmentedControl) {
+        genderSegmentedControl.selectedSegmentIndex = genderSegmentedControlIndex
+        ageSegmentedControl.selectedSegmentIndex = ageSegmentedControlIndex
     }
 
     /// Fetches data from URLString.

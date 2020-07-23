@@ -29,10 +29,10 @@ class CollectionViewController: UICollectionViewController {
     }
 
     override func viewWillAppear(_: Bool) {
-        super.viewWillAppear(false)
+        super.viewWillAppear(true)
+        personsManager.stateOfSegmentedControl(genderSegmentedControl: genderSegmentedControl,
+                                               ageSegmentedControl: ageSegmentedControl)
         collectionView.reloadData()
-
-        updateSegmentControl(state: personsManager.state)
     }
 
     @objc func refresh(sender _: UIRefreshControl) {
@@ -49,7 +49,7 @@ class CollectionViewController: UICollectionViewController {
                 print(error)
             }
 
-            self.personsManager.change()
+            self.personsManager.sorted()
 
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -58,76 +58,36 @@ class CollectionViewController: UICollectionViewController {
         }
     }
 
-    private func updateSegmentControl(state: String) {
-        switch state {
-        case "RR":
-            genderSegmentedControl.selectedSegmentIndex = 0
-            ageSegmentedControl.selectedSegmentIndex = 0
-        case "RU":
-            genderSegmentedControl.selectedSegmentIndex = 0
-            ageSegmentedControl.selectedSegmentIndex = 1
-        case "RD":
-            genderSegmentedControl.selectedSegmentIndex = 0
-            ageSegmentedControl.selectedSegmentIndex = 2
-
-        case "FR":
-            genderSegmentedControl.selectedSegmentIndex = 1
-            ageSegmentedControl.selectedSegmentIndex = 0
-        case "FU":
-            genderSegmentedControl.selectedSegmentIndex = 1
-            ageSegmentedControl.selectedSegmentIndex = 1
-        case "FD":
-            genderSegmentedControl.selectedSegmentIndex = 1
-            ageSegmentedControl.selectedSegmentIndex = 2
-
-        case "MR":
-            genderSegmentedControl.selectedSegmentIndex = 2
-            ageSegmentedControl.selectedSegmentIndex = 0
-        case "MU":
-            genderSegmentedControl.selectedSegmentIndex = 2
-            ageSegmentedControl.selectedSegmentIndex = 1
-        case "MD":
-            genderSegmentedControl.selectedSegmentIndex = 2
-            ageSegmentedControl.selectedSegmentIndex = 2
-        default:
-            break
-        }
-    }
-
     // MARK: - Actions
 
     @IBAction func genderChanged(_: Any) {
         switch genderSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.stateOfGender = "R"
+            personsManager.sortByGender = .random
         case 1:
-            personsManager.stateOfGender = "F"
+            personsManager.sortByGender = .female
         case 2:
-            personsManager.stateOfGender = "M"
+            personsManager.sortByGender = .male
         default:
             break
         }
-        personsManager.change()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        personsManager.sorted()
+        collectionView.reloadData()
     }
 
     @IBAction func ageChanged(_: Any) {
         switch ageSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.stateOfAge = "R"
+            personsManager.sortByAge = .random
         case 1:
-            personsManager.stateOfAge = "U"
+            personsManager.sortByAge = .up
         case 2:
-            personsManager.stateOfAge = "D"
+            personsManager.sortByAge = .down
         default:
             break
         }
-        personsManager.change()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        personsManager.sorted()
+        collectionView.reloadData()
     }
 
     // MARK: - UICollectionViewDataSource
@@ -154,7 +114,7 @@ class CollectionViewController: UICollectionViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        if let destinationVC: CollectionDetailsViewController = segue.destination as? CollectionDetailsViewController,
+        if let destinationVC: DetailsViewController = segue.destination as? DetailsViewController,
             let selectedItem = collectionView.indexPathsForSelectedItems?.first?.item {
             if let firstName = personsManager.personsWithAgeToShow[selectedItem].firstName {
                 destinationVC.textOfName = firstName

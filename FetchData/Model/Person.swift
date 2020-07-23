@@ -12,6 +12,13 @@ struct Person: Codable {
 enum Gender: String, Codable {
     case female = "Female"
     case male = "Male"
+    case random = "Random"
+}
+
+enum Age {
+    case up
+    case down
+    case random
 }
 
 typealias Persons = [Person]

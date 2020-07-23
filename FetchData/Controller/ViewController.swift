@@ -8,7 +8,6 @@ class ViewController: UIViewController {
     @IBOutlet var ageSegmentedControl: UISegmentedControl!
 
     private var personsManager = ServiceLocator.shared.personsManager
-    private let idCell = "PersonCell"
     private let myRefreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         let title = NSLocalizedString("Wait a second, please", comment: "Pull to refresh")
@@ -28,25 +27,25 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_: Bool) {
         super.viewWillAppear(true)
+        personsManager.stateOfSegmentedControl(genderSegmentedControl: genderSegmentedControl,
+                                               ageSegmentedControl: ageSegmentedControl)
         tableView.reloadData()
-        updateSegmentControl(state: personsManager.state)
     }
 
     @objc func refresh(sender _: UIRefreshControl) {
         downloadData()
     }
 
+    /// Download ahd parse data from URL.
     private func downloadData() {
         personsManager.loadJson { result in
             switch result {
             case let .success(data):
                 self.personsManager.parse(jsonData: data)
-
             case let .failure(error):
                 print(error)
             }
-
-            self.personsManager.change()
+            self.personsManager.sorted()
 
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -55,129 +54,35 @@ class ViewController: UIViewController {
         }
     }
 
-    private func updateSegmentControl(state: String) {
-        switch state {
-        case "RR":
-            genderSegmentedControl.selectedSegmentIndex = 0
-            ageSegmentedControl.selectedSegmentIndex = 0
-        case "RU":
-            genderSegmentedControl.selectedSegmentIndex = 0
-            ageSegmentedControl.selectedSegmentIndex = 1
-        case "RD":
-            genderSegmentedControl.selectedSegmentIndex = 0
-            ageSegmentedControl.selectedSegmentIndex = 2
-
-        case "FR":
-            genderSegmentedControl.selectedSegmentIndex = 1
-            ageSegmentedControl.selectedSegmentIndex = 0
-        case "FU":
-            genderSegmentedControl.selectedSegmentIndex = 1
-            ageSegmentedControl.selectedSegmentIndex = 1
-        case "FD":
-            genderSegmentedControl.selectedSegmentIndex = 1
-            ageSegmentedControl.selectedSegmentIndex = 2
-
-        case "MR":
-            genderSegmentedControl.selectedSegmentIndex = 2
-            ageSegmentedControl.selectedSegmentIndex = 0
-        case "MU":
-            genderSegmentedControl.selectedSegmentIndex = 2
-            ageSegmentedControl.selectedSegmentIndex = 1
-        case "MD":
-            genderSegmentedControl.selectedSegmentIndex = 2
-            ageSegmentedControl.selectedSegmentIndex = 2
-        default:
-            break
-        }
-    }
-
     // MARK: - Actions
 
     @IBAction func genderChanged(_: Any) {
         switch genderSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.stateOfGender = "R"
+            personsManager.sortByGender = .random
         case 1:
-            personsManager.stateOfGender = "F"
+            personsManager.sortByGender = .female
         case 2:
-            personsManager.stateOfGender = "M"
+            personsManager.sortByGender = .male
         default:
             break
         }
-        personsManager.change()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        personsManager.sorted()
+        tableView.reloadData()
     }
 
     @IBAction func ageChanged(_: Any) {
         switch ageSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.stateOfAge = "R"
+            personsManager.sortByAge = .random
         case 1:
-            personsManager.stateOfAge = "U"
+            personsManager.sortByAge = .up
         case 2:
-            personsManager.stateOfAge = "D"
+            personsManager.sortByAge = .down
         default:
             break
         }
-        personsManager.change()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-}
-
-// MARK: - Create and configure table
-
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return personsManager.personsWithAgeToShow.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idCell, for: indexPath) as? CustomTableViewCell
-
-        // Configure the cell
-        if let name = personsManager.personsWithAgeToShow[indexPath.row].firstName {
-            cell?.firstName.text = name
-        } else { cell?.firstName.text = "No name" }
-
-        if let age = personsManager.personsWithAgeToShow[indexPath.row].dateOfBirtdh {
-            switch age {
-            case "0":
-                cell?.age.text = "No age"
-            case "1":
-                cell?.age.text = "\(age) year"
-            default:
-                cell?.age.text = "\(age) years"
-            }
-        } else { cell?.age.text = "No age" }
-
-        if let gender = personsManager.personsWithAgeToShow[indexPath.row].gender {
-            if gender == .female {
-                cell?.genderImage.image = UIImage(named: "Female")
-            } else {
-                cell?.genderImage.image = UIImage(named: "Male")
-            }
-        }
-        return cell!
-    }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        if let destinationVC: DetailsViewController = segue.destination as? DetailsViewController,
-            let selectedItem = tableView.indexPathForSelectedRow?.item {
-            if let firstName = personsManager.personsWithAgeToShow[selectedItem].firstName {
-                destinationVC.textOfName = firstName
-            }
-            if let age = personsManager.personsWithAgeToShow[selectedItem].dateOfBirtdh {
-                destinationVC.textOfAge = age
-            }
-            if let gender = personsManager.personsWithAgeToShow[selectedItem].gender {
-                destinationVC.textOfGender = gender.rawValue
-            }
-        }
+        personsManager.sorted()
+        tableView.reloadData()
     }
 }
