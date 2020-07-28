@@ -20,7 +20,6 @@
 		4293D1B124C1EDD40026BA61 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4293D1B024C1EDD40026BA61 /* CollectionViewCell.swift */; };
 		42B46A7F24BF39FD00968E30 /* Data+Age.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B46A7E24BF39FD00968E30 /* Data+Age.swift */; };
 		42B46A8124BFB84C00968E30 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B46A8024BFB84C00968E30 /* DetailsViewController.swift */; };
-		42B7297F24C8378700AB0352 /* ViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B7297E24C8378700AB0352 /* ViewController+TableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +38,6 @@
 		4293D1B024C1EDD40026BA61 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		42B46A7E24BF39FD00968E30 /* Data+Age.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Age.swift"; sourceTree = "<group>"; };
 		42B46A8024BFB84C00968E30 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
-		42B7297E24C8378700AB0352 /* ViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+TableView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				42B46A7E24BF39FD00968E30 /* Data+Age.swift */,
-				42B7297E24C8378700AB0352 /* ViewController+TableView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -253,7 +250,6 @@
 			files = (
 				4293D1B124C1EDD40026BA61 /* CollectionViewCell.swift in Sources */,
 				420ADFB124BD12DC00EB2F2E /* PersonsManager.swift in Sources */,
-				42B7297F24C8378700AB0352 /* ViewController+TableView.swift in Sources */,
 				423959C424BA106900E486D0 /* ViewController.swift in Sources */,
 				42B46A8124BFB84C00968E30 /* DetailsViewController.swift in Sources */,
 				42340F2824BC9D8F0069C838 /* CustomTableViewCell.swift in Sources */,

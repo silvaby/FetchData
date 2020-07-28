@@ -184,40 +184,38 @@
                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJj-pb-fah">
-                                            <rect key="frame" x="8" y="7.9999999999999982" width="45" height="20.333333333333329"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJj-pb-fah">
+                                            <rect key="frame" x="40.333333333333343" y="75" width="47.666666666666657" height="20.333333333333329"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Vmm-R9-Sqv">
+                                            <rect key="frame" x="34" y="9.6666666666666679" width="60" height="57.333333333333336"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="60" id="29R-r4-Zin"/>
+                                                <constraint firstAttribute="width" constant="60" id="hhi-xb-PyN"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cm8-DA-KZ8">
+                                            <rect key="frame" x="49" y="102.33333333333333" width="30" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g7c-aR-YDa">
-                                            <rect key="frame" x="8" y="36" width="47.666666666666664" height="17"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cm8-DA-KZ8">
-                                            <rect key="frame" x="7.9999999999999982" y="61" width="25.333333333333329" height="17"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="WJj-pb-fah" firstAttribute="leading" secondItem="oVE-YR-rm1" secondAttribute="leadingMargin" id="37j-pq-tvj"/>
-                                        <constraint firstItem="g7c-aR-YDa" firstAttribute="top" secondItem="WJj-pb-fah" secondAttribute="bottom" constant="7.6666666666666714" id="B9K-3L-DsB"/>
-                                        <constraint firstItem="cm8-DA-KZ8" firstAttribute="leading" secondItem="g7c-aR-YDa" secondAttribute="leading" id="BQX-vq-NI2"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cm8-DA-KZ8" secondAttribute="trailing" constant="20" symbolic="YES" id="IHa-Gl-FGh"/>
-                                        <constraint firstItem="cm8-DA-KZ8" firstAttribute="top" secondItem="g7c-aR-YDa" secondAttribute="bottom" constant="8" symbolic="YES" id="OuS-Af-Ho4"/>
-                                        <constraint firstItem="WJj-pb-fah" firstAttribute="top" secondItem="oVE-YR-rm1" secondAttribute="topMargin" id="bcm-mk-HhS"/>
-                                        <constraint firstItem="g7c-aR-YDa" firstAttribute="leading" secondItem="WJj-pb-fah" secondAttribute="leading" id="hvJ-Su-dC2"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="g7c-aR-YDa" secondAttribute="trailing" constant="20" symbolic="YES" id="v03-2h-g2o"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WJj-pb-fah" secondAttribute="trailing" constant="20" symbolic="YES" id="yZo-ZZ-jOO"/>
+                                        <constraint firstItem="cm8-DA-KZ8" firstAttribute="centerX" secondItem="oVE-YR-rm1" secondAttribute="centerX" id="4gI-fE-5Ll"/>
+                                        <constraint firstItem="cm8-DA-KZ8" firstAttribute="top" secondItem="WJj-pb-fah" secondAttribute="bottom" constant="7" id="DPN-Xk-6xZ"/>
+                                        <constraint firstItem="Vmm-R9-Sqv" firstAttribute="centerX" secondItem="oVE-YR-rm1" secondAttribute="centerX" id="QXP-wn-JuH"/>
+                                        <constraint firstItem="Vmm-R9-Sqv" firstAttribute="top" secondItem="oVE-YR-rm1" secondAttribute="top" constant="8" id="Tv9-JZ-gkm"/>
+                                        <constraint firstItem="WJj-pb-fah" firstAttribute="centerX" secondItem="oVE-YR-rm1" secondAttribute="centerX" id="YQT-EX-jZa"/>
+                                        <constraint firstItem="WJj-pb-fah" firstAttribute="top" secondItem="Vmm-R9-Sqv" secondAttribute="bottom" constant="7" id="h5V-gx-pt4"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <connections>
                                     <outlet property="age" destination="cm8-DA-KZ8" id="jmj-SK-ffm"/>
-                                    <outlet property="gender" destination="g7c-aR-YDa" id="eMk-70-f16"/>
+                                    <outlet property="genderImage" destination="Vmm-R9-Sqv" id="2lx-8m-Q3Z"/>
                                     <outlet property="name" destination="WJj-pb-fah" id="hoO-mm-9wW"/>
                                     <segue destination="fwI-sF-D8D" kind="show" id="giu-aR-WIf"/>
                                 </connections>
@@ -268,7 +266,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YXC-is-ue0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1999" y="-609"/>
+            <point key="canvasLocation" x="1998.5507246376812" y="-609.375"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="xSt-Uk-0T2">

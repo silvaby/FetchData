@@ -8,6 +8,7 @@ class ViewController: UIViewController {
     @IBOutlet var ageSegmentedControl: UISegmentedControl!
 
     private var personsManager = ServiceLocator.shared.personsManager
+    private let idCell = "PersonCell"
     private let myRefreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         let title = NSLocalizedString("Wait a second, please", comment: "Pull to refresh")
@@ -27,8 +28,8 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_: Bool) {
         super.viewWillAppear(true)
-        personsManager.stateOfSegmentedControl(genderSegmentedControl: genderSegmentedControl,
-                                               ageSegmentedControl: ageSegmentedControl)
+        genderSegmentedControl.selectedSegmentIndex = personsManager.genderSegmentedControlIndex
+        ageSegmentedControl.selectedSegmentIndex = personsManager.ageSegmentedControlIndex
         tableView.reloadData()
     }
 
@@ -46,7 +47,6 @@ class ViewController: UIViewController {
                 print(error)
             }
             self.personsManager.sorted()
-
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.myRefreshControl.endRefreshing()
@@ -54,12 +54,19 @@ class ViewController: UIViewController {
         }
     }
 
+    private func update() {
+        personsManager.sorted()
+        personsManager.change(genderIndex: genderSegmentedControl.selectedSegmentIndex,
+                              ageIndex: ageSegmentedControl.selectedSegmentIndex)
+        tableView.reloadData()
+    }
+
     // MARK: - Actions
 
     @IBAction func genderChanged(_: Any) {
         switch genderSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.sortByGender = .random
+            personsManager.sortByGender = nil
         case 1:
             personsManager.sortByGender = .female
         case 2:
@@ -67,22 +74,53 @@ class ViewController: UIViewController {
         default:
             break
         }
-        personsManager.sorted()
-        tableView.reloadData()
+        update()
     }
 
     @IBAction func ageChanged(_: Any) {
         switch ageSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.sortByAge = .random
+            personsManager.sortByAge = nil
         case 1:
-            personsManager.sortByAge = .up
+            personsManager.sortByAge = .ascending
         case 2:
-            personsManager.sortByAge = .down
+            personsManager.sortByAge = .descending
         default:
             break
         }
-        personsManager.sorted()
-        tableView.reloadData()
+        update()
+    }
+}
+
+// MARK: - Create and configure table
+
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+        return personsManager.personsWithAgeToShow.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: idCell,
+                                                 for: indexPath) as? CustomTableViewCell
+        // Configure the cell
+        cell?.configure(personsManager.personsWithAgeToShow[indexPath.row])
+        return cell!
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        if let destinationVC: DetailsViewController = segue.destination as? DetailsViewController,
+            let selectedItem = tableView.indexPathForSelectedRow?.item {
+            if let firstName = personsManager.personsWithAgeToShow[selectedItem].firstName {
+                destinationVC.textOfName = firstName
+            }
+            if let age = personsManager.personsWithAgeToShow[selectedItem].dateOfBirtdh {
+                destinationVC.textOfAge = age
+            }
+            if let gender = personsManager.personsWithAgeToShow[selectedItem].gender {
+                destinationVC.textOfGender = gender.rawValue
+            }
+        }
     }
 }

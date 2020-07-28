@@ -30,8 +30,8 @@ class CollectionViewController: UICollectionViewController {
 
     override func viewWillAppear(_: Bool) {
         super.viewWillAppear(true)
-        personsManager.stateOfSegmentedControl(genderSegmentedControl: genderSegmentedControl,
-                                               ageSegmentedControl: ageSegmentedControl)
+        genderSegmentedControl.selectedSegmentIndex = personsManager.genderSegmentedControlIndex
+        ageSegmentedControl.selectedSegmentIndex = personsManager.ageSegmentedControlIndex
         collectionView.reloadData()
     }
 
@@ -44,13 +44,10 @@ class CollectionViewController: UICollectionViewController {
             switch result {
             case let .success(data):
                 self.personsManager.parse(jsonData: data)
-
             case let .failure(error):
                 print(error)
             }
-
             self.personsManager.sorted()
-
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
                 self.myRefreshControl.endRefreshing()
@@ -58,12 +55,19 @@ class CollectionViewController: UICollectionViewController {
         }
     }
 
+    private func update() {
+        personsManager.sorted()
+        personsManager.change(genderIndex: genderSegmentedControl.selectedSegmentIndex,
+                              ageIndex: ageSegmentedControl.selectedSegmentIndex)
+        collectionView.reloadData()
+    }
+
     // MARK: - Actions
 
     @IBAction func genderChanged(_: Any) {
         switch genderSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.sortByGender = .random
+            personsManager.sortByGender = nil
         case 1:
             personsManager.sortByGender = .female
         case 2:
@@ -71,23 +75,21 @@ class CollectionViewController: UICollectionViewController {
         default:
             break
         }
-        personsManager.sorted()
-        collectionView.reloadData()
+        update()
     }
 
     @IBAction func ageChanged(_: Any) {
         switch ageSegmentedControl.selectedSegmentIndex {
         case 0:
-            personsManager.sortByAge = .random
+            personsManager.sortByAge = nil
         case 1:
-            personsManager.sortByAge = .up
+            personsManager.sortByAge = .ascending
         case 2:
-            personsManager.sortByAge = .down
+            personsManager.sortByAge = .descending
         default:
             break
         }
-        personsManager.sorted()
-        collectionView.reloadData()
+        update()
     }
 
     // MARK: - UICollectionViewDataSource
@@ -100,14 +102,8 @@ class CollectionViewController: UICollectionViewController {
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as? CollectionViewCell
-
         // Configure the cell
-        cell?.name.text = personsManager.personsWithAgeToShow[indexPath.row].firstName
-        cell?.age.text = personsManager.personsWithAgeToShow[indexPath.row].dateOfBirtdh
-        cell?.gender.text = personsManager.personsWithAgeToShow[indexPath.row].gender?.rawValue
-        cell?.backgroundColor = UIColor.white
-        cell?.layer.borderColor = UIColor.lightGray.cgColor
-        cell?.layer.borderWidth = 0.5
+        cell?.configure(personsManager.personsWithAgeToShow[indexPath.row])
         return cell!
     }
 
